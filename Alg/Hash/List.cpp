@@ -40,13 +40,10 @@ public:
     }
 
     ~unordered_map() {
-        printf("析构函数调用\n");
         Node *pMove;
         Node *next;
         for(int i = 0;i<Cap ; i++){
-            printf("arr[%d].Curr: %d\n",i,arr[i].Curr);
             if(arr[i].Curr == 0){
-                printf("Continue\n");
                 continue;
             }
             next = arr[i].head->next;
@@ -55,7 +52,6 @@ public:
                 delete(pMove);
                 pMove = next;
                 next = next->next;
-                printf("Delete\n");
             }
             delete(pMove);
         }
@@ -90,16 +86,13 @@ public:
 
     }
     int Delete(int Key){
-        printf("AAA\n");
         int index = HashFunction(Key);
         // 该key没有存储过
         if(arr[index].Curr == 0){
-            printf("Curr == 0\n");
             return -1;
         }
         Node *pMove = arr[index].head;
         if(pMove->Key == Key){
-            printf("BBB\n");
             pMove = pMove->next;
             delete(arr[index].head);
             arr[index].head = pMove;
@@ -116,7 +109,6 @@ public:
         {
             if(pMove->Key == Key){
                 pre->next = pMove->next;
-                printf("Begin Delete\n");
                 delete(pMove);
                 arr[index].Curr--;
                 return 1;
@@ -124,14 +116,12 @@ public:
             pMove = pMove->next;
             pre = pre->next;
         }
-        printf("CCC\n");
         return -1;
     }
     int Find(int Key){
         // 该key从来没被映射过
         int index = HashFunction(Key);
         if(arr[index].Curr == 0){
-            printf("Curr == 0\n");
             return -1;
         }
         Node *pMove = arr[index].head;
@@ -146,7 +136,6 @@ public:
 
 private:
     void Expand() {
-        printf("Expand\n");
         int next = SuNum(Cap);
         int tempCap = Cap;
         Cap = next;
@@ -181,31 +170,51 @@ private:
     double status;
 };
 
-int main(){
+int main() {
     unordered_map map;
-    
-    const int NUM_OPERATIONS = 20;  // 操作次数
+
+    const int NUM_OPERATIONS = 99999999;  // 操作次数
     std::default_random_engine generator;
     std::uniform_int_distribution<int> distribution(1, NUM_OPERATIONS);
 
-    auto start = std::chrono::high_resolution_clock::now();
+    auto start_insert = std::chrono::high_resolution_clock::now();
+
     // 插入操作
     for (int i = 0; i < NUM_OPERATIONS; ++i) {
-        int key = distribution(generator);
+        int key = i;
         int value = distribution(generator);
         map.Insert(key, value);
-        printf("%d   %d   %d\n",key,value,map.Find(key));
+    }
+
+    auto end_insert = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed_insert = end_insert - start_insert;
+
+    auto start_find = std::chrono::high_resolution_clock::now();
+
+    // 查找操作
+    for (int i = 0; i < NUM_OPERATIONS; ++i) {
+        int key = i;
+        map.Find(key);
+    }
+
+    auto end_find = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed_find = end_find - start_find;
+
+    auto start_delete = std::chrono::high_resolution_clock::now();
+
+    // 删除操作
+    for (int i = 0; i < NUM_OPERATIONS; ++i) {
+        int key = i;
         map.Delete(key);
     }
-    printf("Insert Ok\n");
 
-
-
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = end - start;
+    auto end_delete = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed_delete = end_delete - start_delete;
 
     // 输出总用时
-    std::cout << "Total time: " << elapsed.count() << " seconds" << std::endl;
+    std::cout << "Insert time: " << elapsed_insert.count() << " seconds" << std::endl;
+    std::cout << "Find time: " << elapsed_find.count() << " seconds" << std::endl;
+    std::cout << "Delete time: " << elapsed_delete.count() << " seconds" << std::endl;
 
     return 0;
 }
