@@ -129,7 +129,6 @@ int main() {
     // 插入操作
     for (int i = 0; i < NUM_OPERATIONS; ++i) {
         int key = distribution(generator);
-        printf("%d\n",key);
         int value = distribution(generator);
         map.Insert(key, value);
     }

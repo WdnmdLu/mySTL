@@ -36,17 +36,28 @@ class unordered_map{
 public:
     unordered_map():Cap(7),Size(0){
         arr = new List[Cap]();
-        status = static_cast<double>(Size) / Cap;
+        status = Size / Cap;
     }
 
     ~unordered_map() {
-        for (int i = 0; i < Cap; ++i) {
-            Node* current = arr[i].head;
-            while (current != nullptr) {
-                Node* next = current->next;
-                delete current;
-                current = next;
+        printf("析构函数调用\n");
+        Node *pMove;
+        Node *next;
+        for(int i = 0;i<Cap ; i++){
+            printf("arr[%d].Curr: %d\n",i,arr[i].Curr);
+            if(arr[i].Curr == 0){
+                printf("Continue\n");
+                continue;
             }
+            next = arr[i].head->next;
+            pMove = arr[i].head;
+            while(next != nullptr){
+                delete(pMove);
+                pMove = next;
+                next = next->next;
+                printf("Delete\n");
+            }
+            delete(pMove);
         }
         delete[] arr;
     }
@@ -59,81 +70,103 @@ public:
         Node* pMove = arr[index].head;
         if (arr[index].Curr == 0) {
             arr[index].head = new Node();
-            pMove = arr[index].head;
-        } else {
+            arr[index].head->Key = Key;
+            arr[index].head->Value = value;
+            arr[index].head->next = nullptr;
+            Size++;
+            status = Size/Cap;
+        } 
+        else {
             while (pMove->next != nullptr) {
                 pMove = pMove->next;
             }
-            pMove->next = new Node();
-            pMove = pMove->next;
+            Node *temp = new Node();
+            temp->Key = Key;
+            temp->Value = value;
+            temp->next = nullptr;
+            pMove->next = temp;
         }
-        pMove->Key = Key;
-        pMove->Value = value;
-        pMove->next = nullptr;
         arr[index].Curr++;
-        Size++;
-        status = static_cast<double>(Size) / Cap;
+
     }
     int Delete(int Key){
+        printf("AAA\n");
         int index = HashFunction(Key);
+        // 该key没有存储过
         if(arr[index].Curr == 0){
+            printf("Curr == 0\n");
             return -1;
         }
         Node *pMove = arr[index].head;
-        while (pMove->next != nullptr)
-        {
-            if(pMove->next->Key == Key){
-                Node *temp = pMove->next;
-                pMove->next = pMove->next->next;
-                delete(temp);
-                arr[index].Curr--;
+        if(pMove->Key == Key){
+            printf("BBB\n");
+            pMove = pMove->next;
+            delete(arr[index].head);
+            arr[index].head = pMove;
+            arr[index].Curr--;
+            if(arr[index].Curr == 0){
                 Size--;
-                status = static_cast<double>(Size) / Cap;
-                return 0;
+                status = Size/Cap;
             }
-            pMove=pMove->next;
+            return 1;
         }
+        Node *pre = arr[index].head;
+        pMove = pMove->next;
+        while (pMove != nullptr)
+        {
+            if(pMove->Key == Key){
+                pre->next = pMove->next;
+                printf("Begin Delete\n");
+                delete(pMove);
+                arr[index].Curr--;
+                return 1;
+            }
+            pMove = pMove->next;
+            pre = pre->next;
+        }
+        printf("CCC\n");
         return -1;
     }
     int Find(int Key){
+        // 该key从来没被映射过
         int index = HashFunction(Key);
         if(arr[index].Curr == 0){
             printf("Curr == 0\n");
             return -1;
         }
-        Node *pMove = arr[index].head->next;
-        while (pMove != nullptr)
-        {
+        Node *pMove = arr[index].head;
+        while(pMove != nullptr){
             if(pMove->Key == Key){
                 return pMove->Value;
             }
-            pMove=pMove->next;
+            pMove = pMove->next;
         }
-        printf("Can't Find\n");
         return -1;
     }
 
 private:
     void Expand() {
+        printf("Expand\n");
         int next = SuNum(Cap);
-        List* newArr = new List[next]();
-        List* tempArr = arr;
         int tempCap = Cap;
         Cap = next;
+        List *newArr = new List[next]();
+        List *tempArr = arr;
         arr = newArr;
-        for (int i = 0; i < tempCap; i++) {
+        for(int i = 0;i<tempCap;i++){
             if(tempArr[i].Curr == 0){
                 continue;
             }
-            Node *pMove = tempArr[i].head->next;
-            while (pMove != nullptr)
+            Node *pMove = tempArr[i].head;
+            Node *next = pMove->next;
+            while (next != nullptr)
             {
-                Node *temp = pMove;
-                pMove = pMove->next;
-                Insert(temp->Key,temp->Value);
-                delete(temp);
+                delete(pMove);
+                pMove = next;
+                next = next->next;
             }
-            delete(tempArr[i].head);
+            delete(pMove);
+            
         }
         delete[] tempArr;
     }
@@ -151,33 +184,22 @@ private:
 int main(){
     unordered_map map;
     
-    const int NUM_OPERATIONS = 11;  // 操作次数
+    const int NUM_OPERATIONS = 20;  // 操作次数
     std::default_random_engine generator;
     std::uniform_int_distribution<int> distribution(1, NUM_OPERATIONS);
 
     auto start = std::chrono::high_resolution_clock::now();
-    printf("Begin\n");
     // 插入操作
     for (int i = 0; i < NUM_OPERATIONS; ++i) {
         int key = distribution(generator);
         int value = distribution(generator);
         map.Insert(key, value);
-        printf("%d   %d\n",key,map.Find(key));
+        printf("%d   %d   %d\n",key,value,map.Find(key));
+        map.Delete(key);
     }
     printf("Insert Ok\n");
 
-    // 查找操作
-    for (int i = 0; i < NUM_OPERATIONS; ++i) {
-        int key = distribution(generator);
-        map.Find(key);
-    }
 
-    // 删除操作
-    for (int i = 0; i < NUM_OPERATIONS; ++i) {
-        int key = distribution(generator);
-        map.Delete(key);
-    }
-    printf("Delete Ok\n");
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
