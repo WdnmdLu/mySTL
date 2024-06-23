@@ -20,13 +20,14 @@ void HeapDown(int *arr, int i, int Size) {
 }
 
 void HeapSort(int *arr, int Size) {
-    //先对数组进行大根堆的处理，将值小的元素下沉
+    // 先对数组进行大根堆的处理，将值小的元素下沉
     // 当前位置i，左孩子2i+1 右孩子2i+2
     int end = Size - 1;
     for (int i = (end - 1) / 2; i >= 0; i--) {
         //从最后一个非叶节点元素开始进行调整，一直调整到根
         HeapDown(arr, i, Size);
     }
+    // 经过上面的调整就保证了非叶节点的值一定大于该节点左右孩子的值
 
     // 堆顶和末尾元素进行交换
     for (int i = end; i > 0; i--) {
@@ -39,13 +40,117 @@ void HeapSort(int *arr, int Size) {
     }
 }
 
-int main() {
-    int arr[] = {1, 9, 2, 8, 3, 7, 4, 6, 5, 10};
-    int arrSize = sizeof(arr) / sizeof(arr[0]);
-    HeapSort(arr, arrSize);
-    for (int i = 0; i < arrSize; i++) {
-        printf("%d ", arr[i]);
+class PriorityQueue {
+public:
+    PriorityQueue(int cap = 20) : Cap(cap), Size(0) {
+        arr = new int[Cap]();
     }
-    printf("\n");
+
+    ~PriorityQueue() {
+        delete[] arr;
+    }
+
+    void Push(int val) {
+        if (Size == Cap) {
+            expand();
+        }
+        
+        // 将新元素放到数组末尾
+        arr[Size] = val;
+        Size++;
+
+        // 进行堆化操作，使得新元素符合大根堆的性质
+        HeapUp();
+    }
+
+    int Top() {
+        if (Size == 0) {
+            std::cerr << "PriorityQueue is empty\n";
+            return -1; // 可以根据实际情况返回错误值或者抛出异常
+        }
+        return arr[0];
+    }
+
+    void Pop() {
+        if (Size == 0) {
+            std::cerr << "PriorityQueue is empty\n";
+            return;
+        }
+
+        // 将堆顶元素与最后一个元素交换
+        arr[0] = arr[Size - 1];
+        Size--;
+
+        // 对堆顶元素进行向下调整，以维持大根堆性质
+        HeapDown(0);
+    }
+
+    bool Empty() {
+        return Size == 0;
+    }
+
+private:
+    int Cap;
+    int Size;
+    int *arr;
+
+    void HeapUp() {
+        int idx = Size - 1;
+        while (idx > 0) {
+            int parent = (idx - 1) / 2;
+            if (arr[parent] < arr[idx]) {
+                // 如果父节点值小于当前节点值，则交换它们
+                std::swap(arr[parent], arr[idx]);
+                idx = parent;
+            } else {
+                break;
+            }
+        }
+    }
+
+    void HeapDown(int idx) {
+        int largest = idx;
+        int left = 2 * idx + 1;
+        int right = 2 * idx + 2;
+
+        // 找到当前节点与其左右孩子中的最大值
+        if (left < Size && arr[left] > arr[largest]) {
+            largest = left;
+        }
+        if (right < Size && arr[right] > arr[largest]) {
+            largest = right;
+        }
+
+        // 如果最大值不是当前节点，则交换并继续向下调整
+        if (largest != idx) {
+            std::swap(arr[idx], arr[largest]);
+            HeapDown(largest);
+        }
+    }
+
+    void expand() {
+        Cap *= 2;
+        int *newArr = new int[Cap]();
+        for (int i = 0; i < Size; i++) {
+            newArr[i] = arr[i];
+        }
+        delete[] arr;
+        arr = newArr;
+    }
+};
+
+int main() {
+    PriorityQueue pq;
+
+    pq.Push(3);
+    pq.Push(2);
+    pq.Push(15);
+
+    std::cout << "Top element: " << pq.Top() << "\n";
+
+    pq.Pop();
+
+    std::cout << "Top element after pop: " << pq.Top() << "\n";
+
     return 0;
 }
