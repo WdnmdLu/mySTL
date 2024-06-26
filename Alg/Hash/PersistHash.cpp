@@ -4,100 +4,112 @@
 #include <set>
 #include "md5.h"
 using namespace std;
-using uint = unsigned int;
-class PhySicalNode;
+
+// Forward declaration
+class PhysicalNode;
+
 // 虚拟节点
-class VirtualNode{
+class VirtualNode {
 public:
-    VirtualNode(string ip,PhySicalNode* node):ip_(ip),Node(node){
+    VirtualNode(string ip, PhysicalNode* node) : ip_(ip), Node(node) {
         md5_ = getMD5(ip.c_str());
     }
-    bool operator<(const VirtualNode& host) const 
-    {
-        return md5_ < host.md5_; 
+
+    bool operator<(const VirtualNode& host) const {
+        return md5_ < host.md5_;
     }
-    bool operator==(const VirtualNode& host) const 
-    {
+
+    bool operator==(const VirtualNode& host) const {
         return md5_ == host.md5_;
     }
-    uint getMd5_() const{
+
+    uint getMd5_() const {
         return md5_;
     }
-    const PhysicalNode *getPhysicalHost() const{
+
+    const PhysicalNode* getPhysicalHost() const {
         return Node;
     }
+
 private:
-    string ip_;// 虚拟节点的ip
-    uint md5_;// 虚拟节点的md5值
-    PhySicalNode *Node;// 虚拟节点属于哪个物理节点的ip
+    string ip_;             // IP address of the virtual node
+    uint md5_;              // MD5 value of the IP address
+    PhysicalNode* Node;     // Pointer to the physical node
 };
+
 // 物理节点
-class PhysicalNode{
+class PhysicalNode {
 public:
-    PhysicalNode(string ip,int vNumber):ip_(ip)
-    {
-        for(int i = 0;i < vNumber ; i++){
-            virtualNodes_.emplace_back(
-                ip + "#" + ::to_string(i),
-                this
-            )
+    PhysicalNode(string ip, int vNumber) : ip_(ip) {
+        for (int i = 0; i < vNumber; i++) {
+            virtualNodes_.emplace_back(ip + "#" + to_string(i), this);
         }
     }
-    string getIp() const{
+
+    string getIp() const {
         return ip_;
     }
-    list<virtualNodes_>& getVirtualList() const{
+
+    const list<VirtualNode>& getVirtualList() const {
         return virtualNodes_;
     }
 
 private:
-    string ip_;
-    list<VirtualNode> virtualNodes_;
+    string ip_;                     // IP address of the physical node
+    list<VirtualNode> virtualNodes_; // List of virtual nodes
 };
 
-class ConsistHash{
+// Consistent Hashing class
+class ConsistentHash {
 public:
-    // 添加到哈希环上
-    void addHost(PhysicalNode &pHost){
-        //获取物理主机上的所有虚拟主机
-        list<VirtualNode> &list = pHost.getVirtualList();
-        for(auto host : list){
-            hashCircle_.insert(host);
+    // Add a physical node to the hash circle
+    void addHost(PhysicalNode& pHost) {
+        const list<VirtualNode>& vNodes = pHost.getVirtualList();
+        for (const auto& vNode : vNodes) {
+            hashCircle_.insert(vNode);
         }
     }
-    void delHost(PhySicalNode &pHost){
-        list<VirtualNode> &list = pHost.getVirtualList();
-        for(auto host : list){
-            auto it = hashCircle_.find(host);
-            if(it != hashCircle_.end()){
+
+    // Remove a physical node from the hash circle
+    void delHost(PhysicalNode& pHost) {
+        const list<VirtualNode>& vNodes = pHost.getVirtualList();
+        for (const auto& vNode : vNodes) {
+            auto it = hashCircle_.find(vNode);
+            if (it != hashCircle_.end()) {
                 hashCircle_.erase(it);
             }
         }
     }
-    string getHost(string clientIp){
+
+    // Get the physical node corresponding to a client IP address
+    string getHost(string clientIp) {
         uint md5 = getMD5(clientIp.c_str());
-        for(auto host : hashCircle_){
-            if(host.getMd5_() > md5){
-                return host.getPhysicalHost()->getIp();
-            }
+        auto it = hashCircle_.upper_bound(VirtualNode(clientIp, nullptr));
+        if (it == hashCircle_.end()) {
+            return hashCircle_.begin()->getPhysicalHost()->getIp();
         }
-        //返回从0开始的第一个节点
-        return hashCircle_.begin()->getPhysicalHost()->getIp();
+        return it->getPhysicalHost()->getIp();
     }
+
 private:
-    set<VirtualNode> hashCircle_;
+    set<VirtualNode> hashCircle_;   // Set to store virtual nodes in the hash circle
 };
 
-// 一致性哈希算法的实现
-int main(){
-    PhysicalNode host1("10.127.123.2",10);
+// Main function
+int main() {
+    PhysicalNode host1("10.127.123.2", 10);
+    PhysicalNode host2("10.127.123.5", 10);
+    PhysicalNode host3("10.127.123.11", 10);
 
-    PhysicalNode host1("10.127.123.5",10);
-
-    PhysicalNode host1("10.127.123.11",10);
-
-    ConsistHash chash;
+    ConsistentHash chash;
     chash.addHost(host1);
     chash.addHost(host2);
     chash.addHost(host3);
+
+    // Example usage: finding the host for a client IP
+    string clientIp = "192.168.0.3";
+    string selectedHost = chash.getHost(clientIp);
+    cout << "Client IP " << clientIp << " maps to host " << selectedHost << endl;
+
+    return 0;
 }

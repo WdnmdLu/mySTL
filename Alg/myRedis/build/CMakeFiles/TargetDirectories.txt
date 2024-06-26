@@ -1,0 +1,3 @@
+/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles/consistent_hash_example.dir
+/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles/edit_cache.dir
+/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles/rebuild_cache.dir

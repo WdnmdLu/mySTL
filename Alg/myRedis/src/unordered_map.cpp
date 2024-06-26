@@ -1,4 +1,4 @@
-#include "unordered_map.hpp"
+#include "unordered_map.h"
 
 // 寻找下一个素数
 int SuNum(int value) {
@@ -18,8 +18,6 @@ int SuNum(int value) {
     }
     return i;
 }
-
-
 
 int stringToInt(const std::string& str) {
     for (char c : str) {
