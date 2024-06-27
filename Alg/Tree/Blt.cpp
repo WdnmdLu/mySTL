@@ -128,15 +128,66 @@ struct Node *insert(struct Node *node, int key) {
 void inorder(struct Node *root) {
     if (root != NULL) {
         inorder(root->left);
-        //printf("%d ", root->key);
+        printf("%d ", root->key);
         inorder(root->right);
     }
+}
+
+Node* minValueNode(Node* node);
+
+Node* DeleteNode(Node *Root,int value){
+    if(Root == nullptr){
+        return Root;
+    }
+    if(Root->key > value){
+        Root->left = DeleteNode(Root->left,value);
+    }
+    else if(Root->key < value){
+        Root->right = DeleteNode(Root->right,value);
+    }
+    else{
+        if(Root->left == nullptr){
+            Node *temp = Root->right;
+            delete(Root);
+            return temp;
+        }
+        if(Root->right == nullptr){
+            Node *temp = Root->left;
+            delete(Root);
+            return temp;
+        }
+        //存在左右孩子
+        Node *temp = minValueNode(Root->right);
+        Root->key = temp->key;
+        Root->right = DeleteNode(Root->right, temp->key);
+    }
+    return Root;
+}
+Node* minValueNode(Node* node) {
+    Node* current = node;
+    // 最小值肯定在最左边
+    while (current && current->left != nullptr) {
+        current = current->left;
+    }
+    return current;
 }
 
 int main() {
     Node* root = nullptr;
 
-    auto start_insert = high_resolution_clock::now();
+    int arr[]={1,9,2,8,3,7,4,6,5,10,11};
+    for(int i = 0;i<sizeof(arr)/sizeof(int);i++){
+        root = insert(root,arr[i]);
+    }
+    inorder(root);
+    printf("\n");
+    root = DeleteNode(root,8);
+    root = DeleteNode(root,1);
+    root = DeleteNode(root,11);
+    inorder(root);
+    printf("\n");
+
+    /*auto start_insert = high_resolution_clock::now();
 
     // 插入1到1000
     for (int i = 1; i <= 9999; ++i) {
@@ -162,6 +213,6 @@ int main() {
     auto duration_inorder = duration_cast<milliseconds>(stop_inorder - start_inorder);
 
     cout << "Inorder traversal time: " << duration_inorder.count() << " milliseconds" << endl;
-
+*/
     return 0;
 }

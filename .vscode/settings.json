@@ -58,5 +58,6 @@
         "sstream": "cpp",
         "typeindex": "cpp",
         "variant": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/mnt/TestShare/mySTL/Alg/myRedis"
 }
