@@ -129,6 +129,30 @@ consistent_hash_example/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/consistent_hash_example.dir/build.make CMakeFiles/consistent_hash_example.dir/build
 .PHONY : consistent_hash_example/fast
 
+src/Bst.o: src/Bst.cpp.o
+.PHONY : src/Bst.o
+
+# target to build an object file
+src/Bst.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/consistent_hash_example.dir/build.make CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.o
+.PHONY : src/Bst.cpp.o
+
+src/Bst.i: src/Bst.cpp.i
+.PHONY : src/Bst.i
+
+# target to preprocess a source file
+src/Bst.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/consistent_hash_example.dir/build.make CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.i
+.PHONY : src/Bst.cpp.i
+
+src/Bst.s: src/Bst.cpp.s
+.PHONY : src/Bst.s
+
+# target to generate assembly for a file
+src/Bst.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/consistent_hash_example.dir/build.make CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.s
+.PHONY : src/Bst.cpp.s
+
 src/ReactorV2.o: src/ReactorV2.cpp.o
 .PHONY : src/ReactorV2.o
 
@@ -234,6 +258,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... consistent_hash_example"
+	@echo "... src/Bst.o"
+	@echo "... src/Bst.i"
+	@echo "... src/Bst.s"
 	@echo "... src/ReactorV2.o"
 	@echo "... src/ReactorV2.i"
 	@echo "... src/ReactorV2.s"

@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/mnt/Share/Work/Project/mySTL/Alg/myRedis/build",
+  "command": "/usr/bin/c++  -I/mnt/Share/Work/Project/mySTL/Alg/myRedis/include -g -std=gnu++14 -o CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.o -c /mnt/Share/Work/Project/mySTL/Alg/myRedis/src/Bst.cpp",
+  "file": "/mnt/Share/Work/Project/mySTL/Alg/myRedis/src/Bst.cpp"
+},
+{
+  "directory": "/mnt/Share/Work/Project/mySTL/Alg/myRedis/build",
+  "command": "/usr/bin/c++  -I/mnt/Share/Work/Project/mySTL/Alg/myRedis/include -g -std=gnu++14 -o CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.o -c /mnt/Share/Work/Project/mySTL/Alg/myRedis/src/ReactorV2.cpp",
+  "file": "/mnt/Share/Work/Project/mySTL/Alg/myRedis/src/ReactorV2.cpp"
+},
+{
+  "directory": "/mnt/Share/Work/Project/mySTL/Alg/myRedis/build",
+  "command": "/usr/bin/c++  -I/mnt/Share/Work/Project/mySTL/Alg/myRedis/include -g -std=gnu++14 -o CMakeFiles/consistent_hash_example.dir/src/main.cpp.o -c /mnt/Share/Work/Project/mySTL/Alg/myRedis/src/main.cpp",
+  "file": "/mnt/Share/Work/Project/mySTL/Alg/myRedis/src/main.cpp"
+},
+{
+  "directory": "/mnt/Share/Work/Project/mySTL/Alg/myRedis/build",
+  "command": "/usr/bin/c++  -I/mnt/Share/Work/Project/mySTL/Alg/myRedis/include -g -std=gnu++14 -o CMakeFiles/consistent_hash_example.dir/src/myRedis.cpp.o -c /mnt/Share/Work/Project/mySTL/Alg/myRedis/src/myRedis.cpp",
+  "file": "/mnt/Share/Work/Project/mySTL/Alg/myRedis/src/myRedis.cpp"
+},
+{
+  "directory": "/mnt/Share/Work/Project/mySTL/Alg/myRedis/build",
+  "command": "/usr/bin/c++  -I/mnt/Share/Work/Project/mySTL/Alg/myRedis/include -g -std=gnu++14 -o CMakeFiles/consistent_hash_example.dir/src/unordered_map.cpp.o -c /mnt/Share/Work/Project/mySTL/Alg/myRedis/src/unordered_map.cpp",
+  "file": "/mnt/Share/Work/Project/mySTL/Alg/myRedis/src/unordered_map.cpp"
+}
+]

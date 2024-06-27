@@ -1,4 +1,8 @@
 #include <iostream>
+#include <chrono>
+#include <random>
+using namespace std;
+using namespace std::chrono;
 
 struct Node{
     Node *left;
@@ -26,8 +30,24 @@ void CreatTree(Node **T,int value){
 void OrderTree(Node *T){
     if(T!=nullptr){
         OrderTree(T->left);
-        printf("%d ",T->data);
+        //printf("%d ",T->data);
         OrderTree(T->right);
+    }
+}
+
+void PreOrderTree(Node *T){
+    if(T!=nullptr){
+        printf("%d ",T->data);
+        PreOrderTree(T->left);
+        PreOrderTree(T->right);
+    }
+}
+
+void OnOrderTree(Node *T){
+    if(T!=nullptr){
+        OnOrderTree(T->left);
+        OnOrderTree(T->right);
+        //printf("%d ",T->data);
     }
 }
 
@@ -68,16 +88,37 @@ Node* minValueNode(Node* node) {
     return current;
 }
 
-int main(){
-    Node *T=nullptr;
-    int arr[]={1,9,2,8,3,7,4,6,5,11};
-    for(int i = 0;i<sizeof(arr)/sizeof(int);i++){
-        CreatTree(&T,arr[i]);
+int main() {
+    Node *T = nullptr;
+    const int num_elements = 9999;
+
+    // Generate random numbers
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(1, num_elements * 10);
+
+    // Insertion timing
+    auto start_insert = high_resolution_clock::now();
+
+    for (int i = 0; i < num_elements; ++i) {
+        int value = dis(gen);
+        CreatTree(&T, value);
     }
-    OrderTree(T);
-    printf("\n====================\n");
-    T = DeleteNode(T,5);
-    T = DeleteNode(T,11);
-    OrderTree(T);
-    printf("\n");
+
+    auto stop_insert = high_resolution_clock::now();
+    auto duration_insert = duration_cast<microseconds>(stop_insert - start_insert);
+
+    // Traversal timing (Inorder)
+    auto start_traverse = high_resolution_clock::now();
+
+    OrderTree(T);  // Traversing without printing for timing purposes
+
+    auto stop_traverse = high_resolution_clock::now();
+    auto duration_traverse = duration_cast<microseconds>(stop_traverse - start_traverse);
+
+    cout << "Inserted " << num_elements << " elements\n";
+    cout << "Insertion time: " << duration_insert.count() << " microseconds\n";
+    cout << "Traversal time: " << duration_traverse.count() << " microseconds\n";
+
+    return 0;
 }

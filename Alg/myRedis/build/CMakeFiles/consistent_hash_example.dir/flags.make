@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/mnt/Share/Work/Project/mySTL/Alg/myRedis/include
 
-CXX_FLAGS = -std=gnu++14
+CXX_FLAGS = -g -std=gnu++14
 

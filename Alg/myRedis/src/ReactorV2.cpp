@@ -124,9 +124,17 @@ void onMessage(void *arg){
     }
     std::string str(buffer);
     std::cout<<"Msg: "<<str<<std::endl;
-    const char* Res = myRedis::GetInstance().Parse(str);
-    printf("Res: %s\n",Res);
-    write(cfd,Res,strlen(Res));
+    memset(buffer,0,strlen(buffer));
+    myRedis::GetInstance().Parse(str,buffer);
+    printf("Res:onMessage %s\n",buffer);
+    write(cfd,buffer,strlen(buffer));
+    if(strcmp(buffer,"OUT") == 0){
+        close(cfd);
+        // 从epoll_fd上将对应的cfd删除
+        epoll_ctl(epoll_fd,EPOLL_CTL_DEL,cfd,NULL);
+        printf("Client Offline\n");
+        return;
+    }
 }
 
 void onConnect(void *arg){

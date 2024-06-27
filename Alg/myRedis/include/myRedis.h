@@ -9,6 +9,7 @@
 #include "stringhash.h"
 #include "unordered_map.h"
 #include "ReactorV2.h"
+#include "Bst.h"
 
 class myRedis{
 public:
@@ -16,8 +17,17 @@ public:
         static myRedis Instance;
         return Instance;
     }
-    ~myRedis(){}
-    const char* Parse(std::string line);
+    
+    void Parse(std::string line,char *Res);
+    void Hash(std::string &cmd,std::vector<std::string> &args,std::istringstream &iss,char *Res);
+    void Tree(std::string &cmd,std::vector<std::string> &args,std::istringstream &iss,char *Res);
+    void RBTree(std::string &cmd,std::vector<std::string> &args,std::istringstream &iss,char *Res);
+    void SKlist(std::string &cmd,std::vector<std::string> &args,std::istringstream &iss,char *Res);
 private:
+    ~myRedis(){}
+    myRedis();
     unordered_map Map;
+    BST tree;
+    //所有的命令都存储在这里
+    unordered_map cmd;
 };

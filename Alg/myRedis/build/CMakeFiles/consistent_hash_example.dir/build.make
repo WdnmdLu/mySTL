@@ -69,10 +69,24 @@ include CMakeFiles/consistent_hash_example.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/consistent_hash_example.dir/flags.make
 
+CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.o: CMakeFiles/consistent_hash_example.dir/flags.make
+CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.o: ../src/Bst.cpp
+CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.o: CMakeFiles/consistent_hash_example.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.o -MF CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.o.d -o CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.o -c /mnt/Share/Work/Project/mySTL/Alg/myRedis/src/Bst.cpp
+
+CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/Share/Work/Project/mySTL/Alg/myRedis/src/Bst.cpp > CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.i
+
+CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/Share/Work/Project/mySTL/Alg/myRedis/src/Bst.cpp -o CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.s
+
 CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.o: CMakeFiles/consistent_hash_example.dir/flags.make
 CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.o: ../src/ReactorV2.cpp
 CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.o: CMakeFiles/consistent_hash_example.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.o -MF CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.o.d -o CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.o -c /mnt/Share/Work/Project/mySTL/Alg/myRedis/src/ReactorV2.cpp
 
 CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.i: cmake_force
@@ -86,7 +100,7 @@ CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.s: cmake_force
 CMakeFiles/consistent_hash_example.dir/src/main.cpp.o: CMakeFiles/consistent_hash_example.dir/flags.make
 CMakeFiles/consistent_hash_example.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/consistent_hash_example.dir/src/main.cpp.o: CMakeFiles/consistent_hash_example.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/consistent_hash_example.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/consistent_hash_example.dir/src/main.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/consistent_hash_example.dir/src/main.cpp.o -MF CMakeFiles/consistent_hash_example.dir/src/main.cpp.o.d -o CMakeFiles/consistent_hash_example.dir/src/main.cpp.o -c /mnt/Share/Work/Project/mySTL/Alg/myRedis/src/main.cpp
 
 CMakeFiles/consistent_hash_example.dir/src/main.cpp.i: cmake_force
@@ -100,7 +114,7 @@ CMakeFiles/consistent_hash_example.dir/src/main.cpp.s: cmake_force
 CMakeFiles/consistent_hash_example.dir/src/myRedis.cpp.o: CMakeFiles/consistent_hash_example.dir/flags.make
 CMakeFiles/consistent_hash_example.dir/src/myRedis.cpp.o: ../src/myRedis.cpp
 CMakeFiles/consistent_hash_example.dir/src/myRedis.cpp.o: CMakeFiles/consistent_hash_example.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/consistent_hash_example.dir/src/myRedis.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/consistent_hash_example.dir/src/myRedis.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/consistent_hash_example.dir/src/myRedis.cpp.o -MF CMakeFiles/consistent_hash_example.dir/src/myRedis.cpp.o.d -o CMakeFiles/consistent_hash_example.dir/src/myRedis.cpp.o -c /mnt/Share/Work/Project/mySTL/Alg/myRedis/src/myRedis.cpp
 
 CMakeFiles/consistent_hash_example.dir/src/myRedis.cpp.i: cmake_force
@@ -114,7 +128,7 @@ CMakeFiles/consistent_hash_example.dir/src/myRedis.cpp.s: cmake_force
 CMakeFiles/consistent_hash_example.dir/src/unordered_map.cpp.o: CMakeFiles/consistent_hash_example.dir/flags.make
 CMakeFiles/consistent_hash_example.dir/src/unordered_map.cpp.o: ../src/unordered_map.cpp
 CMakeFiles/consistent_hash_example.dir/src/unordered_map.cpp.o: CMakeFiles/consistent_hash_example.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/consistent_hash_example.dir/src/unordered_map.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/consistent_hash_example.dir/src/unordered_map.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/consistent_hash_example.dir/src/unordered_map.cpp.o -MF CMakeFiles/consistent_hash_example.dir/src/unordered_map.cpp.o.d -o CMakeFiles/consistent_hash_example.dir/src/unordered_map.cpp.o -c /mnt/Share/Work/Project/mySTL/Alg/myRedis/src/unordered_map.cpp
 
 CMakeFiles/consistent_hash_example.dir/src/unordered_map.cpp.i: cmake_force
@@ -127,6 +141,7 @@ CMakeFiles/consistent_hash_example.dir/src/unordered_map.cpp.s: cmake_force
 
 # Object files for target consistent_hash_example
 consistent_hash_example_OBJECTS = \
+"CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.o" \
 "CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.o" \
 "CMakeFiles/consistent_hash_example.dir/src/main.cpp.o" \
 "CMakeFiles/consistent_hash_example.dir/src/myRedis.cpp.o" \
@@ -135,13 +150,14 @@ consistent_hash_example_OBJECTS = \
 # External object files for target consistent_hash_example
 consistent_hash_example_EXTERNAL_OBJECTS =
 
+../bin/consistent_hash_example: CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.o
 ../bin/consistent_hash_example: CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.o
 ../bin/consistent_hash_example: CMakeFiles/consistent_hash_example.dir/src/main.cpp.o
 ../bin/consistent_hash_example: CMakeFiles/consistent_hash_example.dir/src/myRedis.cpp.o
 ../bin/consistent_hash_example: CMakeFiles/consistent_hash_example.dir/src/unordered_map.cpp.o
 ../bin/consistent_hash_example: CMakeFiles/consistent_hash_example.dir/build.make
 ../bin/consistent_hash_example: CMakeFiles/consistent_hash_example.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable ../bin/consistent_hash_example"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/Share/Work/Project/mySTL/Alg/myRedis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable ../bin/consistent_hash_example"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/consistent_hash_example.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

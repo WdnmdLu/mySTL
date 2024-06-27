@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "../bin/consistent_hash_example"
   "../bin/consistent_hash_example.pdb"
+  "CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.o"
+  "CMakeFiles/consistent_hash_example.dir/src/Bst.cpp.o.d"
   "CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.o"
   "CMakeFiles/consistent_hash_example.dir/src/ReactorV2.cpp.o.d"
   "CMakeFiles/consistent_hash_example.dir/src/main.cpp.o"
