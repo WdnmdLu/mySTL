@@ -16,66 +16,223 @@
     3.叔为黑色  插在父的右边  先以父节点为根进行左旋 然后变为情况2 接着进行调整即可
 */
 
-struct Node{
-    int Color;
+enum Color { RED, BLACK };
+
+// 红黑树节点的定义
+struct Node {
     int data;
-    Node *left;
-    Node *right;
+    Color color;
+    Node *left, *right;
+    Node *Parent;
+    Node(int data,Node *P=nullptr) : data(data), color(RED), left(nullptr), right(nullptr),Parent(P) {}
 };
 
-class rbTree(){
+class rbTree {
 public:
-    void Insert(int Value){
+    rbTree() : Root(nullptr) {}
 
+    // 插入操作
+    void Insert(int value) {
+        Node *newNode = new Node(value);
+        if (Root == nullptr) {
+            Root = newNode;
+            Root->color = BLACK;
+        } else {
+            Node *parent = nullptr;
+            Node *current = Root;
+            while (current != nullptr) {
+                parent = current;
+                if (value < current->data)
+                    current = current->left;
+                else if (value > current->data)
+                    current = current->right;
+                else {
+                    delete newNode;
+                    return; // 如果节点已经存在，不重复插入
+                }
+            }
+
+            // 插入新节点
+            newNode->Parent = parent;
+            if (value < parent->data)
+                parent->left = newNode;
+            else
+                parent->right = newNode;
+
+            // 进行修复操作
+            FixInsert(newNode);
+        }
+    }
+
+    void OrderTree(){
+        InOrderTraversal(Root);
+    }
+    // 中序遍历以验证树的结构和颜色
+    void InOrderTraversal(Node *node) {
+        if (node == nullptr) return;
+        InOrderTraversal(node->left);
+        std::cout << node->data << " ";
+        if (node->color == RED)
+            std::cout << "(RED) ";
+        else
+            std::cout << "(BLACK) ";
+        InOrderTraversal(node->right);
     }
 
 private:
-    struct Node *insert(struct Node* root,int value){
-        //先往下找到可以插入的位置进行插入
-        if(root == nullptr ){
-            root = new Node();
-            root->data = value;
-            root->left = nullptr;
-            root->right = nullptr;
-            return root;
+    Node *Root;
+
+    // 插入后修复红黑树性质
+    void FixInsert(Node *node) {
+        while (node != Root && node->Parent->color == RED) {
+            Node *parent = node->Parent;
+            Node *grandparent = parent->Parent;
+
+            if (grandparent->left == parent) { // 父节点是祖父节点的左孩子
+                Node *uncle = grandparent->right;
+
+                if (uncle != nullptr && uncle->color == RED) {
+                    // Case 1: 叔节点是红色
+                    parent->color = BLACK;
+                    uncle->color = BLACK;
+                    grandparent->color = RED;
+                    node = grandparent;
+                } else {
+                    // Case 2: 叔节点是黑色，当前节点是右孩子
+                    if (node == parent->right) {
+                        node = parent;
+                        LeftRotate(node);
+                        parent = node->Parent;
+                    }
+
+                    // Case 3: 叔节点是黑色，当前节点是左孩子
+                    parent->color = BLACK;
+                    grandparent->color = RED;
+                    RightRotate(grandparent);
+                }
+            } else { // 父节点是祖父节点的右孩子（对称情况）
+                Node *uncle = grandparent->left;
+
+                if (uncle != nullptr && uncle->color == RED) {
+                    // Case 1: 叔节点是红色
+                    parent->color = BLACK;
+                    uncle->color = BLACK;
+                    grandparent->color = RED;
+                    node = grandparent;
+                } else {
+                    // Case 2: 叔节点是黑色，当前节点是左孩子
+                    if (node == parent->left) {
+                        node = parent;
+                        RightRotate(node);
+                        parent = node->Parent;
+                    }
+
+                    // Case 3: 叔节点是黑色，当前节点是右孩子
+                    parent->color = BLACK;
+                    grandparent->color = RED;
+                    LeftRotate(grandparent);
+                }
+            }
         }
-        if(root->data > value){
-            root->left = insert(root->left,value);
-        }
-        else if(root->data < value){
-            root->right = insert(root->right,value);
-        }
-        else{
-            // 找到了相同的值，无法进行插入
-            return root;
-        }
+
+        // 根节点颜色始终是黑色
+        Root->color = BLACK;
     }
 
     // 右旋操作
-    struct Node *rightRotate(struct Node *Root) {
-        struct Node *newRoot = Root->left;
-        struct Node *OldL = newRoot->right;
-
-        // 执行右旋操作
-        newRoot->right = Root;
-        Root->left = OldL;
-
-        return newRoot;
+    void RightRotate(Node *pivot) {
+        Node *leftChild = pivot->left;
+        pivot->left = leftChild->right;
+        if (leftChild->right != nullptr)
+            leftChild->right->Parent = pivot;
+        leftChild->Parent = pivot->Parent;
+        if (pivot->Parent == nullptr)
+            Root = leftChild;
+        else if (pivot == pivot->Parent->right)
+            pivot->Parent->right = leftChild;
+        else
+            pivot->Parent->left = leftChild;
+        leftChild->right = pivot;
+        pivot->Parent = leftChild;
     }
 
     // 左旋操作
-    struct Node *leftRotate(struct Node *Root) {
-        struct Node *newRoot = Root->right;
-        struct Node *OldR = newRoot->left;
+    void LeftRotate(Node *pivot) {
+        Node *rightChild = pivot->right;
+        pivot->right = rightChild->left;
+        if (rightChild->left != nullptr)
+            rightChild->left->Parent = pivot;
+        rightChild->Parent = pivot->Parent;
+        if (pivot->Parent == nullptr)
+            Root = rightChild;
+        else if (pivot == pivot->Parent->left)
+            pivot->Parent->left = rightChild;
+        else
+            pivot->Parent->right = rightChild;
+        rightChild->left = pivot;
+        pivot->Parent = rightChild;
+    }
 
-        // 执行左旋操作
-        newRoot->left = Root;
-        Root->right = OldR;
+    Node* minValueNode(Node* node) {
+        Node* current = node;
+        // 最小值肯定在最左边
+        while (current && current->left != nullptr) {
+            current = current->left;
+        }
+        return current;
+    }
 
-        return newRoot;
+    //删除节点
+    //如果是叶子节点直接删除即可
+    //如果是非叶子节点，删除之后找到左孩子中最大的那个节点替换上来
+    Node* DeleteNode(Node *Root,int value){
+        if(Root == nullptr){
+            return Root;
+        }
+        if(Root->data > value){
+            Root->left = DeleteNode(Root->left,value);
+        }
+        else if(Root->data < value){
+            Root->right = DeleteNode(Root->right,value);
+        }//当前的这个Root就是要删除的节点
+        else{
+            //如果左孩子为空，直接右孩子来接替当前节点的位置
+            if(Root->left == nullptr){
+                Node *temp = Root->right;
+                delete(Root);
+                return temp;
+            }//如果右孩子为空，直接左孩子来接替当前节点位置
+            if(Root->right == nullptr){
+                Node *temp = Root->left;
+                delete(Root);
+                return temp;
+            }
+            //存在左右孩子
+            //找到右孩子中值最小的那个节点
+            Node *temp = minValueNode(Root->right);
+            Root->key = temp->key;//更新当前root的值为右孩子中最小的key
+            //当前Root->right=删除了右孩子中值为key的那个节点即可
+            Root->right = DeleteNode(Root->right, temp->key);
+        }
+        return Root;
     }
 };
 
-int main(){
+int main() {
+    rbTree tree;
 
+    // 插入测试数据
+    tree.Insert(1);
+    tree.Insert(2);
+    tree.Insert(3);
+    tree.Insert(4);
+    tree.Insert(5);
+    tree.Insert(6);
+
+    // 中序遍历打印结果验证红黑树性质
+    std::cout << "Inorder traversal of the Red-Black Tree:" << std::endl;
+    tree.OrderTree();
+    std::cout << std::endl;
+
+    return 0;
 }

@@ -87,6 +87,7 @@ struct Node *insert(struct Node *node, int key) {
         return newNode(key);
 
     if (key < node->key)
+        // 往当前节点的左孩子进行遍历
         node->left = insert(node->left, key);
     else if (key > node->key)
         node->right = insert(node->right, key);
@@ -100,8 +101,9 @@ struct Node *insert(struct Node *node, int key) {
     int balance = getBalance(node);
 
     // 根据不同的不平衡情况分别进行相应的调整即可  LL RR LR RL
-    // 如果节点不平衡，进行旋转操作
-    // 左子树不平衡的情况  LL
+    // 如果节点不平衡 balance >=2 <==> balance > 1
+    
+    // key < node->left->key 说明新插入的节点在当前节点的左孩子的左子树中 为LL型不平衡
     if (balance > 1 && key < node->left->key)
         return rightRotate(node);
 
@@ -109,7 +111,7 @@ struct Node *insert(struct Node *node, int key) {
     if (balance < -1 && key > node->right->key)
         return leftRotate(node);
 
-    // 左右子树都不平衡的情况 LR型
+    // 左右子树都不平衡的情况 LR型  key > node->left->key  用于明确插入位置
     if (balance > 1 && key > node->left->key) {
         node->left = leftRotate(node->left);
         return rightRotate(node);
@@ -133,7 +135,14 @@ void inorder(struct Node *root) {
     }
 }
 
-Node* minValueNode(Node* node);
+Node* minValueNode(Node* node) {
+    Node* current = node;
+    // 最小值肯定在最左边
+    while (current && current->left != nullptr) {
+        current = current->left;
+    }
+    return current;
+}
 
 Node* DeleteNode(Node *Root,int value){
     if(Root == nullptr){
@@ -163,14 +172,7 @@ Node* DeleteNode(Node *Root,int value){
     }
     return Root;
 }
-Node* minValueNode(Node* node) {
-    Node* current = node;
-    // 最小值肯定在最左边
-    while (current && current->left != nullptr) {
-        current = current->left;
-    }
-    return current;
-}
+
 
 int main() {
     Node* root = nullptr;
