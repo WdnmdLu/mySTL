@@ -5,8 +5,24 @@ using namespace std;
 
 class Animal{
     public:
+        Animal() = default;
         int a;
         int b;
+        void Speak(int c){
+            printf("Speak(int c)\n");
+        }
+    private:
+        Animal(Animal &other){
+            this->a = other.a;
+            this->b = other.b;
+        }
+};
+
+class Cat : public Animal{
+    public:
+        void Speak(int a,int b){
+            printf("Speak(int a,int b)\n");
+        }
 };
 
 /*
@@ -99,7 +115,12 @@ void Print(int a){
 
 }
 
+void test05(){
+    Animal a;
+    Cat cat;
+    cat.Speak(10,20);
+}
+
 int main(){
-    Print(10,20);
-    Print(10);
+    test05();
 }
