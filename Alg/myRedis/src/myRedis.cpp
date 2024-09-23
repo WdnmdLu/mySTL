@@ -28,7 +28,7 @@ void myRedis::Parse(std::string line,char *Res){
         }
         break;
     case 1:
-        
+        Tree(cmd,args,iss,Res);
         break;
     case 2:
         
@@ -100,6 +100,7 @@ void myRedis::Tree(std::string &cmd,std::vector<std::string> &args,std::istrings
         std::string key = args[0];
         std::string value = args[1];
         int num = stringToInt(args[0]);
+        printf("Tree Insert Key: %s  Value: %s\n",key.c_str(),value.c_str());
         tree.Insert(key,value);
         strcpy(Res,"OK");
     } 
@@ -110,12 +111,13 @@ void myRedis::Tree(std::string &cmd,std::vector<std::string> &args,std::istrings
         }
         std::string key = args[0];
         std::cout << cmd << " Key " << key << std::endl;
-        const char *R = Map.Find(key);
-        if(R == nullptr){
+        tree.Find(key,Res);
+        if(Res == nullptr || strlen(Res) == 0){
+            printf("Find Error 1111\n");
             strcpy(Res,"nil");
             return;
         }
-        strcpy(Res,R);
+        printf("Find Ok 1111\n");
     }
     else if(cmd == "BDEL"){
         std::string arg;

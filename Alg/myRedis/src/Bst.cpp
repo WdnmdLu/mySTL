@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Bst.h"
+#include <string.h>
 // 找到最小不平衡子树的根，对其进行更新
 /*
     左旋：
@@ -116,20 +117,64 @@ struct TNode* BST::insert(struct TNode *TNode, int key, std::string &value) {
     return TNode;
 }
 
-void find(struct TNode *Root,int key,char *Res){
+void BST::find(struct TNode *Root,int key,char *Res,int flag){
     if(Root == nullptr){
-        strcpy(Res,"False");
+        Res = nullptr;
+        printf("Find Key Error\n");
         return;
     }
     if(Root->key == key){
-        strcpy(Res,Root->value);
+        if(flag == 1){
+            Root->value = std::string(Res);
+            return;
+        }
+        strcpy(Res,Root->value.c_str());
         return;
     }
     if(Root->key > key){
-        find(Root->left,key,Res);
+        find(Root->left,key,Res,flag);
     }
     else{
-        find(Root->right,key,Res);
+        find(Root->right,key,Res,flag);
     }
     return;
+}
+
+TNode* BST::minValueNode(TNode* node) {
+    TNode* current = node;
+    // 最小值肯定在最左边
+    while (current && current->left != nullptr) {
+        current = current->left;
+    }
+    return current;
+}
+
+TNode* BST::DeleteNode(TNode *Root,int value,int *Count){
+    if(Root == nullptr){
+        return Root;
+    }
+    if(Root->key > value){
+        Root->left = DeleteNode(Root->left,value, Count);
+    }
+    else if(Root->key < value){
+        Root->right = DeleteNode(Root->right,value, Count);
+    }
+    else{
+        if(Root->left == nullptr){
+            TNode *temp = Root->right;
+            delete(Root);
+            return temp;
+        }
+        if(Root->right == nullptr){
+            TNode *temp = Root->left;
+            delete(Root);
+            return temp;
+        }
+        (*Count)++;
+        //存在左右孩子
+        TNode *temp = minValueNode(Root->right);
+        Root->key = temp->key;
+        Root->right = DeleteNode(Root->right, temp->key, Count);
+    }
+    return Root;
 }

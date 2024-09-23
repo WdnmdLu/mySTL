@@ -1,6 +1,8 @@
 #include <iostream>
 #include <chrono>
 #include "stringhash.h"
+#include <string.h>
+#include <vector>
 using namespace std;
 
 // 找到最小不平衡子树的根，对其进行更新
@@ -27,12 +29,27 @@ public:
     BST():Root(nullptr){}
     void Insert(std::string Key,std::string value){
         int key = BKDRHash(Key.c_str());
-        insert(Root,key,value);
+        char Res[1024]={0};
+        strcpy(Res,value.c_str());
+        find(this->Root,key,Res,1);
+        Root = insert(Root,key,value);
     }
-    void Find(std::string Key){
+    void Find(std::string Key,char *buffer){
         int key = BKDRHash(Key.c_str());
-        char buffer[1024]={0};
-        find(this->Root,key,buffer);
+        find(this->Root,key,buffer,0);
+    }
+    void Del(std::vector<string> Str,char *buffer){
+        int key;
+        int count = 0;
+        for(int i = 0;i<Str.size();i++){
+            key = BKDRHash(Str[i].c_str());
+            DeleteNode(Root,key,&count);
+        }
+        std::stringstream ss;
+        ss << count;
+        std::string Res=("(integer)");
+        Res+=ss;
+        strcpy(buffer,Res.c_str());
     }
 private:
     // 获取节点的高度
@@ -57,6 +74,10 @@ private:
     struct TNode *insert(struct TNode *TNode, int key,std::string &value);
 
     // find的结果会存放到Res中
-    void find(struct TNode *Root,int key,char *Res);
+    void find(struct TNode *Root,int key,char *Res,int flag);
+
+    TNode* minValueNode(TNode* node);
+    TNode* DeleteNode(TNode *Root,int value,int *Count);
     TNode* Root;
+
 };

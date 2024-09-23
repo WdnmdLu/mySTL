@@ -126,7 +126,7 @@ void onMessage(void *arg){
     std::cout<<"Msg: "<<str<<std::endl;
     memset(buffer,0,strlen(buffer));
     myRedis::GetInstance().Parse(str,buffer);
-    printf("Res:onMessage %s\n",buffer);
+    printf("Res:onMessage %s   Size: %d\n",buffer,strlen(buffer));
     write(cfd,buffer,strlen(buffer));
     if(strcmp(buffer,"OUT") == 0){
         close(cfd);
