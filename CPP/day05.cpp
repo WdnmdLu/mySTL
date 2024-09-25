@@ -65,16 +65,12 @@ class Sender{
             std::cout<<mail.Title<<"  "<<mail.Context<<std::endl;
             return;
         }
+
+    private:
+        Sender(){}
 };
 
 
 int main(){
-    Complex C1(1,2);
-    std::cout<<C1<<std::endl;
-    std::cin>>C1;
-    std::cout<<C1<<std::endl;
-
-    Sender sender;
-    Mail mail("Hello World","HaHaHa");
-    sender<<mail;
+    Sender *sender = new Sender();
 }
