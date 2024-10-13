@@ -1,6 +1,6 @@
 #include <iostream>
 #include <pthread.h>
-#include <SDL.h>
+#include <unistd.h>
 class Queue{
 public:
     Queue(int Cap = 2){
@@ -18,19 +18,10 @@ public:
             newNode->next = head->next;
             head->next = newNode;
             if(i == 0){
-                tail= newNode;
+                tail = newNode;
             }
         }
-        i=0;
-        Node *pMove = head->next;
-        while(pMove != NULL){
-            pMove = pMove->next;
-            i++;
-        }
-        printf("%d   %d\n",i,Capacity);
-
         pthread_mutex_init(&Mut,NULL);
-        pthread_cond_init(&Cond,NULL);
     }
     ~Queue(){ 
         Node *pMove = head->next;
@@ -38,7 +29,9 @@ public:
         while(pMove != NULL){
             temp = pMove;
             pMove = pMove->next;
-            free(temp->data);
+            if(temp->data != NULL){
+                free(temp->data);
+            }
             free(temp);
         }
     }
@@ -60,18 +53,18 @@ public:
         if(size == 0){
             return;
         }
+        // 释放节点数据
         Node *temp = head->next;
-        if(size == 1){
+        if(temp == curr){
             curr = head;
-            head->next = NULL;
-            free(temp->data);
-            free(temp);
         }
-        else{
-            head->next = temp->next;
-            free(temp->data);
-            free(temp);
-        }
+        head->next = temp->next;
+        temp->next = NULL;
+        free(temp->data);
+        temp->data = NULL;
+        // 将节点插入到队尾从新进行利用
+        tail->next = temp;
+        tail = temp;
         size--;
         pthread_mutex_unlock(&Mut);
     }
@@ -80,6 +73,7 @@ public:
         if(size > 0){
             return head->next->data;
         }
+        
         return NULL;
     }
     // 进行二倍扩容
@@ -90,6 +84,7 @@ public:
             tail->next = newNode;
             tail = newNode;
         }
+        printf("Expand Queue\n");
         Capacity *= 2;
     }
 
@@ -116,26 +111,72 @@ private:
     Node *head;
     // 最新入队的数据
     Node *curr;
-    // 指向最后一个位置的节点
+    // 指向最后一个位置的节点，用于进行扩容操作
     Node *tail;
 
     pthread_mutex_t Mut;
-    pthread_cond_t Cond;
 };
+static int flag = 1;
+void* ThreadFunction(void *arg){
+    Queue *q = (Queue*)arg;
+
+    while(flag == 1){
+        if(q->GetSize() == 0){
+            usleep(10);
+            continue;
+        }
+        std::cout<<"Data: "<<*(int*)q->Front()<<std::endl;
+        q->Pop();
+    }
+
+    return NULL;
+}
+
+void test01(){
+    Queue q;
+    pthread_t tid;
+    pthread_create(&tid,NULL,ThreadFunction,&q);
+    int i;
+    for(i = 0 ; i < 100 ; i++){
+        int *data = (int*)malloc(sizeof(int));
+        *data = i;
+        while (q.GetSize() > 5)
+        {
+            usleep(10);
+        }
+        q.Push(data);
+    }
+    while(q.GetSize() > 0){
+        usleep(10);
+    }
+    flag = 0;
+    pthread_join(tid,NULL);
+}
+
+void test02(){
+    Queue q;
+    int i;
+    for(i = 0; i < 100 ; i++){
+        int *data = (int*)malloc(sizeof(int));
+        *data = i;
+        q.Push(data);
+    }
+    int j = 0;
+    printf("QueueSize: %d\n",q.GetSize());
+    int Size = q.GetSize();
+    for(i = 0 ; i < Size ; i++){
+        printf("%d ",*(int*)q.Front());
+        q.Pop();
+        j++;
+        if(j == 5){
+            j = 0;
+            printf("\n");
+        }
+    }
+}
 
 int main(){
-    Queue q;
-    for(int i = 0; i < 100 ; i++){
-        int *data1 = (int*)malloc(sizeof(int));
-        *data1 = i;
-        q.Push(data1);
-    }
-    for(int i = 0; i < 100 ; i++){
-        printf("%d  Size: %d\n",*(int*)q.Front(),q.GetSize());
-        q.Pop();
-    }
-    
-    
-    
-    printf("\n");
+    test01();
+
+    return 0;
 }
